@@ -98,6 +98,7 @@ class _PlacesAutocompleteOverlayState extends PlacesAutocompleteState {
         data: theme,
         child: Scaffold(
           appBar: AppBar(
+            automaticallyImplyLeading: widget.showBackButton,
             title: AppBarPlacesAutoCompleteTextField(
               textDecoration: widget.decoration,
               textStyle: widget.textStyle,

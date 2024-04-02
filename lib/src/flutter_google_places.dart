@@ -48,6 +48,10 @@ class PlacesAutocompleteWidget extends StatefulWidget {
   /// In case of changing the default text style of result's text
   final TextStyle? resultTextStyle;
 
+  final void Function(Prediction)? onTap;
+
+  final bool showBackButton;
+
   const PlacesAutocompleteWidget({
     required this.apiKey,
     this.mode = Mode.fullscreen,
@@ -73,6 +77,8 @@ class PlacesAutocompleteWidget extends StatefulWidget {
     this.textStyle,
     this.themeData,
     this.resultTextStyle,
+    this.onTap,
+    this.showBackButton = true,
   }) : super(key: key);
 
   @override
@@ -98,7 +104,7 @@ class _PlacesAutocompleteOverlayState extends PlacesAutocompleteState {
             ),
           ),
           body: PlacesAutocompleteResult(
-            onTap: Navigator.of(context).pop,
+            onTap: widget.onTap ?? (p) => Navigator.of(context).pop(p),
             logo: widget.logo,
             resultTextStyle: widget.resultTextStyle,
           ),
@@ -124,15 +130,16 @@ class _PlacesAutocompleteOverlayState extends PlacesAutocompleteState {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                IconButton(
-                  color: theme.brightness == Brightness.light
-                      ? Colors.black45
-                      : null,
-                  icon: _iconBack,
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
+                if (widget.showBackButton)
+                  IconButton(
+                    color: theme.brightness == Brightness.light
+                        ? Colors.black45
+                        : null,
+                    icon: _iconBack,
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.only(right: 8.0),
